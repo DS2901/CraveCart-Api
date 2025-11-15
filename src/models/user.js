@@ -5,5 +5,4 @@ const userSchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true }
 });
-// init
 export default mongoose.model("User", userSchema);
