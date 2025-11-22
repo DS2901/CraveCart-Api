@@ -3,6 +3,8 @@ import {
   loginUserService,
 } from "../services/authService.js";
 
+import { generateToken } from "../utils/jwt.js";
+
 export const signup = async (req, res) => {
   try {
     const { name, email, password } = req.body;
@@ -17,12 +19,22 @@ export const signup = async (req, res) => {
 
 export const login = async (req, res) => {
   try {
-
     const { email, password } = req.body;
-    console.log(req.body, "request body");
     const user = await loginUserService(email, password);
-    res.status(200).json({ message: "Login successful", userId: user._id });
+
+    const token = generateToken(user._id);
+
+    res.status(200).json({
+      error: false,
+      message: "Login successful",
+      token,
+      userId: user._id,
+    });
+
   } catch (err) {
-    res.status(400).json({ error: err.message });
+    res.status(400).json({
+      error: true,
+      message: err.message
+    });
   }
 };

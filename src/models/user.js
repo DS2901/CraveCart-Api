@@ -9,7 +9,7 @@ const userSchema = new mongoose.Schema({
 
 // Pre-save middleware to hash password
 userSchema.pre("save", async function (next) {
-  if (!this.isModified("password")) return next(); // only hash if password is new or changed
+  if (!this.isModified("password")) return next();
   this.password = await bcrypt.hash(this.password, 10);
   next();
 });
